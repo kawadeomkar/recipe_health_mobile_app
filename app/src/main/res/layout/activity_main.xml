@@ -7,7 +7,7 @@
     tools:context=".Register">
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/tv_main_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Name"
+        android:text="Welcome to Recipe Suggestor!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -25,8 +25,8 @@
         app:layout_constraintVertical_bias="0.172" />
 
 
-    <EditText
-        android:id="@+id/et_name"
+    <Button
+        android:id="@+id/b_main_letsgo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -35,18 +35,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:text="Let's Go!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.238" />
-
+        app:layout_constraintTop_toBottomOf="@+id/tv_main_name"
+        app:layout_constraintVertical_bias="0.357" />
 
     <Button
-        android:id="@+id/b_logout"
+        android:id="@+id/b_main_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -55,10 +53,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Logout"
+        android:text="Sign up!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.619" />
+        app:layout_constraintTop_toBottomOf="@+id/b_main_letsgo"
+        app:layout_constraintVertical_bias="0.125" />
 </android.support.constraint.ConstraintLayout>

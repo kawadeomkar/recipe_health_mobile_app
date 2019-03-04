@@ -5,32 +5,53 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button b_logout;
-    EditText et_email, et_name;
+    Button b_letsgo, b_signup;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        et_email = (EditText) findViewById(R.id.et_email);
-        et_name = (EditText) findViewById(R.id.et_name);
-        b_logout = (Button) findViewById(R.id.b_logout);
+        b_letsgo = (Button) findViewById(R.id.b_main_letsgo);
+        b_signup = (Button) findViewById(R.id.b_main_signup);
 
-        b_logout.setOnClickListener(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // Check if user is already logged in
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+
+            Toast.makeText(MainActivity.this, "Welcome back! Please sign in again.",
+                    Toast.LENGTH_SHORT).show();
+            firebaseAuth.signOut();
+            //startActivity(this);
+        }
+
+        b_letsgo.setOnClickListener(this);
+        b_signup.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.b_logout:
+            case R.id.b_main_letsgo:
 
                 startActivity(new Intent(this, Login.class));
+                break;
+
+            case R.id.b_main_signup:
+
+                startActivity(new Intent(this, Register.class));
                 break;
         }
     }
