@@ -55,7 +55,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             if (task.isSuccessful()) {
                                 Toast.makeText(Register.this, "Your account was made!",
                                         Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Register.this, MainActivity.class));
+                                startActivity(new Intent(Register.this, RegistrationInfo.class));
                             } else if (!task.isSuccessful()){
                                 String errorCode = ((FirebaseAuthException) task.getException()).getMessage();
                                 Toast.makeText(Register.this, "Registration failed: " + errorCode,

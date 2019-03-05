@@ -45,7 +45,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.b_login:
-                    signin(et_email.getText().toString(), et_password.getText().toString());
+                    if (validate()) {
+                        signIn();
+                    }
                 break;
 
             case R.id.tv_login_register:
@@ -54,9 +56,29 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void signin(String email, String password) {
+
+    private boolean validate() {
+        boolean result = false;
+
+        String email = et_email.getText().toString();
+        String password = et_password.getText().toString();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "You're forgetting a field!", Toast.LENGTH_SHORT).show();
+        } else {
+            result = true;
+        }
+
+        return result;
+    }
+    private void signIn() {
+
+        String email = et_email.getText().toString();
+        String password = et_password.getText().toString();
+
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener
                 (new OnCompleteListener<AuthResult>() {
+
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
