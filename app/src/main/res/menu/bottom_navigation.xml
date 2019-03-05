@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_recipes"
+        android:icon="@drawable/ic_recipes"
+        android:title="Recipes" />
+
+    <item
+        android:id="@+id/nav_fridge"
+        android:icon="@drawable/ic_fridge"
+        android:title="Ingredients" />
+
+    <item
+        android:id="@+id/nav_account"
+        android:icon="@drawable/ic_account"
+        android:title="Account" />
+
+</menu>

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">recipe_app</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="registration_forward">Don\'t have an account? Sign up here!</string>
+    <string name="name">Name</string>
+    <string name="welcome">Welcome to Recipe Suggestor!</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign up!</string>
+    <string name="letsgo">Let\'s go!</string>
 </resources>

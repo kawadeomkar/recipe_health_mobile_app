@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,9 +62,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     // move to next page!
                     Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(Login.this, ));
-                } else {
-                    Toast.makeText(Login.this, "Login failed!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Login.this, HomePage.class));
+                } else if (!task.isSuccessful()) {
+                    String errorCode = ((FirebaseAuthException) task.getException()).getMessage();
+                    Toast.makeText(Login.this, "Login failed! " + errorCode, Toast.LENGTH_LONG).show();
                 }
             }
         });

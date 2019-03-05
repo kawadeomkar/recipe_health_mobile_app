@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,9 +56,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                 Toast.makeText(Register.this, "Your account was made!",
                                         Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Register.this, MainActivity.class));
-                            } else {
-                                Toast.makeText(Register.this, "Something went wrong...",
-                                        Toast.LENGTH_SHORT).show();
+                            } else if (!task.isSuccessful()){
+                                String errorCode = ((FirebaseAuthException) task.getException()).getMessage();
+                                Toast.makeText(Register.this, "Registration failed: " + errorCode,
+                                        Toast.LENGTH_LONG).show();
                             }
 
                         }

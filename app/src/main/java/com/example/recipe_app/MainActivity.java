@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         firebaseAuth = FirebaseAuth.getInstance();
 
         // Check if user is already logged in
-
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
 
