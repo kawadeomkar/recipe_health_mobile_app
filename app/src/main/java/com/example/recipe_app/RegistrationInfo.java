@@ -10,15 +10,18 @@ import android.widget.Toast;
 
 public class RegistrationInfo extends AppCompatActivity implements View.OnClickListener {
 
-    Button b_next;
-    EditText et_age, et_weight, et_height;
-    Spinner spin_gender, spin_weight_goal;
+    // Define class variables from the page
+    private Button b_next;
+    private EditText et_age, et_weight, et_height;
+    private Spinner spin_gender, spin_weight_goal;
 
+    // on creation of activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_info);
 
+        // set class variables equal to their inputs
         et_age = (EditText) findViewById(R.id.et_reg_age);
         et_weight = (EditText) findViewById(R.id.et_reg_height);
         et_height = (EditText) findViewById(R.id.et_reg_height);
@@ -26,13 +29,15 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         spin_weight_goal = (Spinner) findViewById(R.id.spin_reg_gender);
         b_next = (Button) findViewById(R.id.btn_reg_next);
 
+        // listen if the user has clicked the next button
         b_next.setOnClickListener(this);
     }
 
+    // Check which listener was called
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
+            // next button was clicked
             case R.id.btn_reg_next:
                 if (validate()) {
                     //startActivity(new Intent(Register.this, MainActivity.class));
@@ -41,6 +46,10 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    /* validate inputs
+    returns true if all inputs are not empty
+    note: display which field is missing
+     */
     private boolean validate() {
         boolean result = false;
 

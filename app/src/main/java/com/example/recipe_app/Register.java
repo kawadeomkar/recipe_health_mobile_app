@@ -17,46 +17,56 @@ import com.google.firebase.auth.FirebaseAuthException;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
 
-    Button b_register;
-    EditText et_email, et_name, et_password;
+    // Define class variables from the page
+    private Button b_register;
+    private EditText et_email, et_name, et_password;
     private FirebaseAuth firebaseAuth;
 
+    // on creation of activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // set class variables equal to their inputs
         et_email = (EditText) findViewById(R.id.et_register_email);
         et_name = (EditText) findViewById(R.id.et_register_name);
         et_password = (EditText) findViewById(R.id.et_register_password);
         b_register = (Button) findViewById(R.id.b_register);
 
+        // get current activity instance
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // listen if the user has clicked the register button
         b_register.setOnClickListener(this);
     }
 
-
+    // Check which listener was called
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
+            // register button was clicked
             case R.id.b_register:
-                // upload data to the database
+                // validated, upload data to the database
                 if (validate()) {
+                    // get trimmed string versions
                     String email = et_email.getText().toString().trim();
                     String password = et_password.getText().toString().trim();
-
+                    // create user and upload to authentication database
                     firebaseAuth.createUserWithEmailAndPassword(
                             email,
                             password
                     ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        // on completion of sending to firebase
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            // if account was made
                             if (task.isSuccessful()) {
                                 Toast.makeText(Register.this, "Your account was made!",
                                         Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Register.this, RegistrationInfo.class));
-                            } else if (!task.isSuccessful()){
+                            } // display which error using errCode
+                             else if (!task.isSuccessful()){
                                 String errorCode = ((FirebaseAuthException) task.getException()).getMessage();
                                 Toast.makeText(Register.this, "Registration failed: " + errorCode,
                                         Toast.LENGTH_LONG).show();
@@ -69,7 +79,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    // simple validation function for register inputs
+    /* simple validation function for register inputs
+    returns true if no inputs were empty
+    note: include better checks? display which field is missing
+     */
     private boolean validate() {
         Boolean result = false;
 
