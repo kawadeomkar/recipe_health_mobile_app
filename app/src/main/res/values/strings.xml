@@ -8,4 +8,16 @@
     <string name="login">Login</string>
     <string name="signup">Sign up!</string>
     <string name="letsgo">Let\'s go!</string>
+
+    <string-array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="weight_goal">
+        <item>Bulk up!</item>
+        <item>Cut fat!</item>
+        <item>Maintain!</item>
+    </string-array>
+
 </resources>

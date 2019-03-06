@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "493534127728-nkv8e4gkejcf0vi0g3b5bt8bplasfmfl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recipe_app",
+            "certificate_hash": "55f9ef49cf2a4afd8f411a3443f9e8d59422f92b"
+          }
+        },
+        {
           "client_id": "493534127728-nc0s8b6e9cfog1bakmeo8ucj0jsu4iak.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493534127728-nc0s8b6e9cfog1bakmeo8ucj0jsu4iak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -10,16 +10,27 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
 
     // Define class variables from the page
     private Button b_register;
     private EditText et_email, et_name, et_password;
+    // firebase/debugging variables
+    private static final String TAG = "Register.java";
+    private static final String name = "name";
+    private static final String password = "password";
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
 
     // on creation of activity
@@ -49,9 +60,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             case R.id.b_register:
                 // validated, upload data to the database
                 if (validate()) {
-                    // get trimmed string versions
-                    String email = et_email.getText().toString().trim();
-                    String password = et_password.getText().toString().trim();
+                    final String email = et_email.getText().toString();
+                    String password = et_password.getText().toString();
                     // create user and upload to authentication database
                     firebaseAuth.createUserWithEmailAndPassword(
                             email,
@@ -62,9 +72,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             // if account was made
                             if (task.isSuccessful()) {
+                                // save user in database
+                                saveUser();
                                 Toast.makeText(Register.this, "Your account was made!",
                                         Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Register.this, RegistrationInfo.class));
+                                // include email value for next activity
+                                startActivity(new Intent(Register.this, RegistrationInfo.class)
+                                    .putExtra("email_from_reg", email));
                             } // display which error using errCode
                              else if (!task.isSuccessful()){
                                 String errorCode = ((FirebaseAuthException) task.getException()).getMessage();
@@ -97,6 +111,31 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         }
 
         return result;
+    }
+
+    // save user to database
+    public void saveUser() {
+        String email = et_email.getText().toString();
+        String user_password = et_password.getText().toString();
+        String user_name = et_name.getText().toString();
+
+        Map<String, Object> user = new HashMap<>();
+        user.put(name, user_name);
+        user.put(password, user_password);
+
+        db.collection("users").document(email).set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 }
 
