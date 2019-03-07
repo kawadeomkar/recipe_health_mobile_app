@@ -16,14 +16,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegistrationInfo extends AppCompatActivity implements View.OnClickListener{
 
     // Define class variables from the page
     private Button b_next;
-    private EditText et_age, et_weight, et_height, et_email;
+    private EditText et_age, et_weight, et_height, et_diet;
     private Spinner spin_gender, spin_weight_goal;
 
     private static final String TAG = "Register.java";
@@ -32,6 +35,8 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
     private static final String height = "height";
     private static final String gender = "gender";
     private static final String weight_goal = "weight_goal";
+    private static final String favorites = "favorites";
+    private static final String dietary_restrictions = "dietary_restrictions";
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
@@ -43,7 +48,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_registration_info);
 
         // set class variables equal to their inputs
-        et_email = (EditText) findViewById(R.id.et_register_email);
+        et_diet = (EditText) findViewById(R.id.et_reginfo_diet);
         et_age = (EditText) findViewById(R.id.et_reg_age);
         et_weight = (EditText) findViewById(R.id.et_reg_height);
         et_height = (EditText) findViewById(R.id.et_reg_height);
@@ -90,9 +95,10 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         String height = et_height.getText().toString();
         String gender = spin_gender.getSelectedItem().toString();
         String weight_goal = spin_weight_goal.getSelectedItem().toString();
+        String diet = et_diet.getText().toString();
 
         if (age.isEmpty() || weight.isEmpty() || height.isEmpty() || gender.isEmpty()
-                || weight_goal.isEmpty()) {
+                || weight_goal.isEmpty() || diet.isEmpty()) {
             Toast.makeText(this, "You're forgetting a field!", Toast.LENGTH_SHORT).show();
         } else {
             result = true;
@@ -110,6 +116,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         String user_gender = spin_gender.getSelectedItem().toString();
         String user_weight_goal = spin_weight_goal.getSelectedItem().toString();
         String email = getIntent().getStringExtra("email_from_reg");
+        List<String> diet = Arrays.asList(et_diet.getText().toString().split(","));
 
         Map<String, Object> user = new HashMap<>();
         user.put(age, user_age);
@@ -117,8 +124,11 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         user.put(height, user_height);
         user.put(gender, user_gender);
         user.put(weight_goal, user_weight_goal);
+        user.put(favorites, new ArrayList<String>());
+        user.put(dietary_restrictions, diet);
 
-        db.collection("users").document(email).set(user)
+        db.collection("users").document(email).collection("activities")
+                .document("account_information").set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

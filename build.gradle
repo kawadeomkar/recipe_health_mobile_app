@@ -19,6 +19,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven{
+            url 'https://raw.github.com/zeeshanejaz/unirest-android/mvn-repo'
+        }
 
     }
 }

@@ -22,7 +22,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/_reg_goal"
-        app:layout_constraintVertical_bias="0.051" />
+        app:layout_constraintVertical_bias="0.038" />
 
     <EditText
         android:id="@+id/et_reg_height"
@@ -41,7 +41,7 @@
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reg_height"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.055" />
 
     <Spinner
         android:id="@+id/spin_reg_gender"
@@ -59,7 +59,7 @@
         app:layout_constraintHorizontal_bias="0.805"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reg_gender"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tv_reg_height"
@@ -67,17 +67,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="528dp"
         android:text="Height (inches)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.208"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_reg_age"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/et_reg_age" />
 
     <TextView
         android:id="@+id/tv_reg_gender"
@@ -92,10 +91,10 @@
         android:text="Gender"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.744"
+        app:layout_constraintHorizontal_bias="0.739"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_reg_weight"
-        app:layout_constraintVertical_bias="0.152" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <EditText
         android:id="@+id/et_reg_age"
@@ -147,7 +146,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reg_height"
-        app:layout_constraintVertical_bias="0.323" />
+        app:layout_constraintVertical_bias="0.156" />
 
     <TextView
         android:id="@+id/tv_reg_weight"
@@ -165,7 +164,7 @@
         app:layout_constraintHorizontal_bias="0.739"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintVertical_bias="0.102" />
 
     <TextView
         android:id="@+id/tv_info_reg"
@@ -180,9 +179,10 @@
         android:text="We're going to need some more information"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.074" />
+        app:layout_constraintVertical_bias="0.037" />
 
     <TextView
         android:id="@+id/tv_reg_age"
@@ -200,7 +200,7 @@
         app:layout_constraintHorizontal_bias="0.24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_info_reg"
-        app:layout_constraintVertical_bias="0.058" />
+        app:layout_constraintVertical_bias="0.027" />
 
     <Button
         android:id="@+id/btn_reg_next"
@@ -218,6 +218,42 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spin_reg_goal"
-        app:layout_constraintVertical_bias="0.066" />
+        app:layout_constraintVertical_bias="0.66" />
+
+    <TextView
+        android:id="@+id/tv_reginfo_diet"
+        android:layout_width="331dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Dietary restrictions (Separate with commas please!)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spin_reg_goal"
+        app:layout_constraintVertical_bias="0.012" />
+
+    <EditText
+        android:id="@+id/et_reginfo_diet"
+        android:layout_width="330dp"
+        android:layout_height="152dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_reginfo_diet"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

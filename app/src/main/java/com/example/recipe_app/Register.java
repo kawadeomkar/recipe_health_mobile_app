@@ -123,7 +123,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         user.put(name, user_name);
         user.put(password, user_password);
 
-        db.collection("users").document(email).set(user)
+        db.collection("users").document(email).collection("activities")
+            .document("user_credentials").set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
