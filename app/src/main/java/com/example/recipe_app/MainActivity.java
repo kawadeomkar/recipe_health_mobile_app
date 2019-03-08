@@ -7,8 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,6 +29,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set class variables equal to their inputs
         b_letsgo = (Button) findViewById(R.id.b_main_letsgo);
         b_signup = (Button) findViewById(R.id.b_main_signup);
+
+        SpoonAPI spoon = new SpoonAPI();
+        List<String> t = new ArrayList<>();
+        t.add("apples");
+        t.add("sugar");
+        t.add("flour");
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        List<RecipeTemp> temp = spoon.getRandomRecipes(t, 3, requestQueue);
+        if (temp.size() == 3) {
+        }
 
         // get instance of firebase authentication object and check if user is already logged in
         // note: currently do not have logout button, hard coded the sign out
