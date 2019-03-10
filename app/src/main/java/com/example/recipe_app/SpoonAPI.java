@@ -1,122 +1,49 @@
 package com.example.recipe_app;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SpoonAPI  {
+    // urls for API calls
     private String url_complexRecipe = "https://spoonacular-recipe-food-nutrition-v1." +
             "p.rapidapi.com/recipes/searchComplex";
     private String header_key = "vKls1ysqi6mshp5kJSbAidp6k9CVp14y8mFjsn0fKHab0671nS";
     private String url_getRecipeWithID1 = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi." +
             "com/recipes/";
     private String url_getRecipeWithID2 = "/information?includeNutrition=true";
-
+    // API return variables
     private List<RecipeTemp> recipeComplex;
-    private RecipeFull recipeIDFull;
-    private boolean recipeIDFinished = false;
-    private boolean recipeComplexFinished = false;
+    private RecipeFull recipeFull;
 
-    // force synchronicity (refactor later)
-    private void setRecipeIDBoolean() {
-        recipeIDFinished = true;
-    }
 
-    // force synchronicity (refactor later)
-    private void setRecipeComplexBoolean() {
-        recipeComplexFinished = true;
-    }
-
-    // temp testing
+    // get recipeFull after helper function is finished
     public RecipeFull getRecipeFull() {
-        return recipeIDFull;
+        return recipeFull;
     }
 
-    //
-    public boolean getRecipeIDCheck() {
-        return recipeIDFinished;
+    // get recipeComplex list of recipes when helper function is finished
+    public List<RecipeTemp> getRecipeComplex() {
+        return recipeComplex;
     }
 
-    public void apiHelper(String url, String name, RequestQueue requestQueue) {
-        Log.d("SPOONAPI", "ENTERED APIHELPER FUNCTION");
-        final String call = name;
-        Log.d("MAINACTIVITY", "ABOUT TO CREATE API REQUEST");
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url,
-                null, new Response.Listener<JSONObject>() {
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onResponse(JSONObject response) {
-                // convert response into json array, then loop through each object and store into
-                // recipe object
-                switch (call) {
-                    case "recipeComplex":
-                        getRecipeComplexHelper(response);
-                        setRecipeComplexBoolean();
-                    case "recipeID":
-                        Log.d("SPOONAPI", "SANITY CHECK: CORRECT CASE");
-                        getRecipeByIDHelper(response);
-                        setRecipeIDBoolean();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("ERROR_CHECKER", error.getMessage());
-            }
-        }) {
-
-            /**
-             * Passing some request headers
-             */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
-                headers.put("X-RapidAPI-Key", header_key);
-                return headers;
-            }
-        };
-
-        requestQueue.add(req);
-    }
-
-
-    /* given a recipe id, it  will return all information about that recipe (ingredients,
-    nutritional breakdown, time etc.
-     */
-    public void getRecipeByID(int id, RequestQueue requestQueue) {
-        recipeIDFinished = false;
-        Log.d("SPOONAPI", "ENTERED GETRECIPEBYID FUNCTION");
+    // returns url query for getting a recipe's full information given ID
+    public String getRecipeIDURL(int id) {
+        recipeFull = new RecipeFull();
         String url_query = url_getRecipeWithID1 + Integer.toString(id) + url_getRecipeWithID2;
-        recipeIDFull = new RecipeFull();
-        Log.d("SPOONAPI", "ABOUT TO CALL API HELPER");
-        apiHelper(url_query, "recipeID", requestQueue);
+        return url_query;
     }
 
-
-    /* this function returns a list of recipes IDs depending on ingredients and a number
+    /* returns url query for getting list of recipes (not full information, meant for displaying)
+    given ingredients and number of results wanted
     url_query: adds on parameters
-    num2: final version for inner onResponse method (needs final)
     result: returns a list of recipe objects
      */
-    public List<RecipeTemp> getRecipeComplex(List<String> ingredients, int number, RequestQueue requestQueue) {
+    public String getRecipeComplex(List<String> ingredients, int number) {
         recipeComplex = new ArrayList<>();
         String ranking = "0";
         String offset = "0";
@@ -135,12 +62,8 @@ public class SpoonAPI  {
         for (int i = 0; i < ingredients.size()-1; ++i) {
             url_query += "%2C+" + ingredients.get(i);
         }
-        // make the json request
 
-        apiHelper(url_query,"recipeComplex", requestQueue);
-        while (!recipeComplexFinished) {} // force synchronicity (sorry refactor later)
-        recipeComplexFinished = false;
-        return recipeComplex;
+        return url_query;
     }
 
     // helper function to set up recipe object for getRecipeComplex function
@@ -183,8 +106,6 @@ public class SpoonAPI  {
 
     // helper function for getting recipe information by ID
     public void getRecipeByIDHelper(JSONObject response) {
-        Log.d("SPOONAPI", "SANITY CHECK: CORRECT RECIPEID HELPER FUNCTION");
-        RecipeFull recipeFull = new RecipeFull();
         try {
             if (response.has("vegetarian")) {
                 recipeFull.setVegetarian(response.getBoolean("vegetarian"));
@@ -277,8 +198,6 @@ public class SpoonAPI  {
                 }
             }
             recipeFull.setNutrition(tempNutrition);
-            recipeIDFull = recipeFull;
-
         } catch (Exception e) {
             Log.d("ERROR_CHECKER", e.getMessage());
         }

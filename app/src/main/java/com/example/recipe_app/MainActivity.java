@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -47,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         b_letsgo.setOnClickListener(this);
         b_signup.setOnClickListener(this);
 
-        HTTPTest();
     }
 
     // Check which listener was called
@@ -65,16 +62,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void HTTPTest() {
-        SpoonAPI spoon = new SpoonAPI();
-        Log.d("MAINACTIVITY", "CREATED SPOONAPI");
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        RecipeFull recipetemp = new RecipeFull();
-        Log.d("MAINACTIVITY", "ABOUT TO CREATE SPOON API AND CALL ");
-        spoon.getRecipeByID(479102, requestQueue);
-        // while function below does not work
-        // while (spoon.getRecipeIDCheck() == false);
-        recipetemp = spoon.getRecipeFull();
-        Log.d("MAINACTIVITY", "THE TITLE IS: " + recipetemp.getTitle());
-    }
 }
