@@ -25,13 +25,12 @@ public class RecipeFull {
     private String healthScore;
     private String sourceName;
     private String instructions;
+    private Nutrition nutrition;
     private List<String> diets; // converts from list of map<int, string>
     private List<String> cuisines; // converts from list of map<int, string>
     private List<Ingredient> ingredients_list;
 
-    public boolean isCheap() {
-        return cheap;
-    }
+    public boolean isCheap() { return cheap; }
 
     public boolean isVegetarian() {
         return vegetarian;
@@ -116,6 +115,8 @@ public class RecipeFull {
     public String getInstructions() {
         return instructions;
     }
+
+    public Nutrition getNutrition() { return nutrition; }
 
     public List<Ingredient> getIngredients_list() {
         return ingredients_list;
@@ -228,4 +229,6 @@ public class RecipeFull {
     public void setWhole30(boolean whole30) {
         this.whole30 = whole30;
     }
+
+    public void setNutrition(Nutrition nutrition) { this.nutrition = nutrition; }
 }

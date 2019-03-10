@@ -1,11 +1,17 @@
 package com.example.recipe_app;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomePage extends AppCompatActivity {
 
@@ -45,5 +51,20 @@ public class HomePage extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new RecipeFragment()).commit();
+    }
+
+    // TESTING get the recipes
+    private void setUpHTTPRecipes() {
+        SpoonAPI spoon = new SpoonAPI();
+        List<String> t = new ArrayList<>();
+        t.add("apples");
+        t.add("sugar");
+        t.add("flour");
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        List<RecipeTemp> temp = spoon.getRecipeComplex(t, 3, requestQueue);
+        if (temp.size() == 3) {
+        }
     }
 }
