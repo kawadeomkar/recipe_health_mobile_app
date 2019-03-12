@@ -12,7 +12,7 @@ public class SpoonAPI  {
     // urls for API calls
     private String url_complexRecipe = "https://spoonacular-recipe-food-nutrition-v1." +
             "p.rapidapi.com/recipes/searchComplex";
-    private String header_key = "vKls1ysqi6mshp5kJSbAidp6k9CVp14y8mFjsn0fKHab0671nS";
+    private String headerKey = "vKls1ysqi6mshp5kJSbAidp6k9CVp14y8mFjsn0fKHab0671nS";
     private String url_getRecipeWithID1 = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi." +
             "com/recipes/";
     private String url_getRecipeWithID2 = "/information?includeNutrition=true";
@@ -38,12 +38,17 @@ public class SpoonAPI  {
         return url_query;
     }
 
+    // return header key
+    public String getHeaderKey() {
+        return headerKey;
+    }
+
     /* returns url query for getting list of recipes (not full information, meant for displaying)
     given ingredients and number of results wanted
     url_query: adds on parameters
     result: returns a list of recipe objects
      */
-    public String getRecipeComplex(List<String> ingredients, int number) {
+    public String getRecipeComplexURL(List<String> ingredients, int number) {
         recipeComplex = new ArrayList<>();
         String ranking = "0";
         String offset = "0";
@@ -58,9 +63,15 @@ public class SpoonAPI  {
                 "&instructionsRequired=" + instructionsRequired + "&includeIngredients=";
 
         // add on ingredients to url string
-        url_query += ingredients.get(0);
-        for (int i = 0; i < ingredients.size()-1; ++i) {
-            url_query += "%2C+" + ingredients.get(i);
+        if (ingredients.size() > 1) {
+            url_query += ingredients.get(0);
+            for (int i = 0; i < ingredients.size()-1; ++i) {
+                url_query += "%2C+" + ingredients.get(i);
+            }
+        } else if (ingredients.size() == 1) {
+            url_query += ingredients.get(0);
+        } else { // TODO: case if ingredients list is empty -> perhaps throw error earlier if null
+
         }
 
         return url_query;

@@ -1,19 +1,24 @@
 package com.example.recipe_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomePage extends AppCompatActivity {
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db;
+    private String email;
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -35,8 +40,12 @@ public class HomePage extends AppCompatActivity {
                             break;
                     }
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFragment).commit();
+                    FragmentManager fm = getSupportFragmentManager();
+                    // create arguments to be sent to recipeFragment
+                    Bundle args = new Bundle();
+                    args.putString("email", email);
+                    selectedFragment.setArguments(args);
+                    fm.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                     return true;
                 }
             };
@@ -46,25 +55,41 @@ public class HomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        // get instance of firebaseAuth, check if user is signed in
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user == null) { // user is not signed in! send him to home page
+            Toast.makeText(HomePage.this, "Welcome back! Please sign in again.",
+                    Toast.LENGTH_SHORT).show();
+            firebaseAuth.signOut();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
+        // instantiate bottom navigation vieew
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new RecipeFragment()).commit();
+        // start up recipeFragment with fragmentManager
+        FragmentManager fm = this.getSupportFragmentManager();
+        // create arguments to be sent to recipeFragment
+        Bundle args = new Bundle();
+        email = getIntent().getStringExtra("email_from_login");
+        args.putString("email", email);
+        RecipeFragment recipeFrag = new RecipeFragment();
+        recipeFrag.setArguments(args);
+        // start transaction
+        fm.beginTransaction().replace(R.id.fragment_container, recipeFrag).commit();
     }
 
     // TESTING get the recipes
     private void setUpHTTPRecipes() {
         SpoonAPI spoon = new SpoonAPI();
-        List<String> t = new ArrayList<>();
-        t.add("apples");
-        t.add("sugar");
-        t.add("flour");
+        db = FirebaseFirestore.getInstance();
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        List<RecipeTemp> temp = spoon.getRecipeComplex(t, 3, requestQueue);
-        if (temp.size() == 3) {
-        }
+
+
+
+
+
     }
 }

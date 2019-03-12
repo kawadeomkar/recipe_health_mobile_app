@@ -8,6 +8,7 @@
     <string name="login">Login</string>
     <string name="signup">Sign up!</string>
     <string name="letsgo">Let\'s go!</string>
+    <string name="recipeComplexFragment">Here are some recipes you might like!</string>
 
     <string-array name="genders">
         <item>Male</item>

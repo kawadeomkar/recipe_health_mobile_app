@@ -99,7 +99,8 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
 
         if (age.isEmpty() || weight.isEmpty() || height.isEmpty() || gender.isEmpty()
                 || weight_goal.isEmpty() || diet.isEmpty()) {
-            Toast.makeText(this, "You're forgetting a field!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You're forgetting a field!",
+                    Toast.LENGTH_SHORT).show();
         } else {
             result = true;
         }

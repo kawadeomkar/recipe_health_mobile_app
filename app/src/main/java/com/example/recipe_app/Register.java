@@ -30,7 +30,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private static final String TAG = "Register.java";
     private static final String name = "name";
     private static final String password = "password";
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
 
     // on creation of activity
@@ -123,6 +123,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         user.put(name, user_name);
         user.put(password, user_password);
 
+        db = FirebaseFirestore.getInstance();
         db.collection("users").document(email).collection("activities")
             .document("user_credentials").set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
