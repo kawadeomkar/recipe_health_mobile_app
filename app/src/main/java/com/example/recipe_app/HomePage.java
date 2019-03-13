@@ -72,7 +72,7 @@ public class HomePage extends AppCompatActivity {
         FragmentManager fm = this.getSupportFragmentManager();
         // create arguments to be sent to recipeFragment
         Bundle args = new Bundle();
-        email = getIntent().getStringExtra("email_from_login");
+        email = getIntent().getStringExtra("email");
         args.putString("email", email);
         RecipeFragment recipeFrag = new RecipeFragment();
         recipeFrag.setArguments(args);

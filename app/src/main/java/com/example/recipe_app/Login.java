@@ -99,7 +99,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, HomePage.class)
-                            .putExtra("email_from_login", email));
+                            .putExtra("email", email));
                 } // could not login, display error
                 else if (!task.isSuccessful()) {
                     String errorCode = ((FirebaseAuthException) task.getException()).getMessage();

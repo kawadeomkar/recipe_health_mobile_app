@@ -1,5 +1,6 @@
 package com.example.recipe_app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,10 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -40,8 +39,11 @@ public class RecipeFragment extends Fragment {
     private DocumentReference docRef;
     private String email;
     private List<String> ingredients;
+    private List<RecipeTemp> recipeTempList;
     private int numberRecipesToShow;
+    private RecipeComplexAdapter recipeComplexAdapter;
     private RequestQueue requestQueue;
+    private ListView recipeList;
     final String TAG = "RecipeFragment";
 
     @Nullable
@@ -56,46 +58,26 @@ public class RecipeFragment extends Fragment {
             Log.d(TAG, "BUNDLE DOES NOT EXIST");
         }
 
+        View view = inflater.inflate(R.layout.fragment_recipe, container, false);
+        recipeList = (ListView) view.findViewById (R.id.lv_recipe_frag);
+
         retrieveIngredients();
-        ListView listview = (ListView) getView().findViewById (R.id.lv_recipe_frag);
-        return inflater.inflate(R.layout.fragment_recipe, container, false);
+
+        return view;
     }
 
-    // TODO: fix adapter (move to other clsas)?
-    class CustomAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return numberRecipesToShow;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = getLayoutInflater().inflate(R.layout.recipefragmentrecipeview, null);
-
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.iv_recipe_frag);
-            TextView textView_recipe_title = (TextView) convertView
-                    .findViewById(R.id.tv_recipe_frag_title);
-            TextView textView_recipe_info = (TextView) convertView
-                    .findViewById(R.id.tv_recipe_frag_info);
-
-            return null;
-        }
-    }
 
     // create listview and display recipes
-    private void handleRecipeFragmentView() {
-
+    private void handleRecipeFragmentAdapter() {
+        Context context = getActivity().getApplicationContext();
+        recipeComplexAdapter = new RecipeComplexAdapter(context, recipeTempList);
+        recipeList.setAdapter(recipeComplexAdapter);
+        recipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // todo: move to new activity for selected recipe
+            }
+        });
     }
 
     // call api with given ingredients
@@ -115,7 +97,8 @@ public class RecipeFragment extends Fragment {
                         spoon.getRecipeComplexHelper(response);
                         Log.d("RECIPEFRAGMENT", "THIS IS THE SPOON RESULT: "
                                 + spoon.getRecipeComplex());
-
+                        recipeTempList = spoon.getRecipeComplex();
+                        handleRecipeFragmentAdapter();
                     }
                 }, new Response.ErrorListener() {
             @Override

@@ -58,9 +58,15 @@ public class SpoonAPI  {
         String excludeIngredients;
         String intolerances;
         String diet; // vegan, keto etc
-        String url_query = url_complexRecipe + "?number=" + Integer.toString(number)
-                + "&ranking=" + ranking + "&offset=" + offset + "&limitLicense=" + limitLicense +
-                "&instructionsRequired=" + instructionsRequired + "&includeIngredients=";
+        String minFat = "0";
+        String minCalories = "0";
+        String minProtein = "0";
+        String minCarbs = "0";
+        String url_query = url_complexRecipe + "?number=" + Integer.toString(number) + "&minFat=" +
+                minFat + "&minCalories=" + minCalories + "&minProtein=" + minProtein + "&minCarbs="
+                + minCarbs + "&ranking=" + ranking + "&offset=" + offset + "&limitLicense="
+                + limitLicense + "&instructionsRequired="
+                + instructionsRequired + "&includeIngredients=";
 
         // add on ingredients to url string
         if (ingredients.size() > 1) {
@@ -89,18 +95,27 @@ public class SpoonAPI  {
 
                 recipe.setId(Integer.toString(recipe_object.getInt("id")));
                 recipe.setImage(recipe_object.getString("image"));
+                Log.d("ERROR_CHECKER: ", "What's the image URL? " +
+                        recipe.getImage());
                 recipe.setMissedIngredientCount(recipe_object
                         .getString("missedIngredientCount"));
                 recipe.setUsedIngredientCount(recipe_object
                         .getString("usedIngredientCount"));
                 recipe.setTitle(recipe_object.getString("title"));
 
-                            /* unsure how many recipes contain this, block off for now
-                            recipe.setCalories(recipe_object.getString("calories"));
-                            recipe.setCalories(recipe_object.getString("carbs"));
-                            recipe.setCalories(recipe_object.getString("fat"));
-                            recipe.setCalories(recipe_object.getString("protein"));
-                            */
+                // only included if min/max macros are set in API request call
+                if (recipe_object.has("calories")) {
+                    recipe.setCalories(recipe_object.getString("calories"));
+                }
+                if (recipe_object.has("carbs")) {
+                    recipe.setCarbs(recipe_object.getString("carbs"));
+                }
+                if (recipe_object.has("fat")) {
+                    recipe.setFat(recipe_object.getString("fat"));
+                }
+                if (recipe_object.has("protein")) {
+                    recipe.setProtein(recipe_object.getString("protein"));
+                }
 
                 recipeComplex.add(recipe);
                 Log.d("ERROR_CHECKER: ", "Were adding the result now with size: " +

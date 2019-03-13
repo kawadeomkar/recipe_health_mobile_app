@@ -72,7 +72,7 @@ public class RegistrationIngredients extends AppCompatActivity {
         saveIngredients();
         Toast.makeText(this, "Your ingredients have been saved!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(RegistrationIngredients.this, HomePage.class)
-                .putExtra("email _from_regIng", email));
+                .putExtra("email", email));
     }
 
     // save ingredients into the database
