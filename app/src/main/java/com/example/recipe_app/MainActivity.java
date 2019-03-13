@@ -3,6 +3,7 @@ package com.example.recipe_app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -21,12 +22,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d("MAINACTIVITY", "STARTED ONCREATE ");
+
         // set class variables equal to their inputs
         b_letsgo = (Button) findViewById(R.id.b_main_letsgo);
         b_signup = (Button) findViewById(R.id.b_main_signup);
 
         // get instance of firebase authentication object and check if user is already logged in
         // note: currently do not have logout button, hard coded the sign out
+
+
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) { // user is signed in! send him to home page
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // listen if the user has clicked the next button
         b_letsgo.setOnClickListener(this);
         b_signup.setOnClickListener(this);
+
     }
 
     // Check which listener was called
@@ -55,4 +61,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
 }

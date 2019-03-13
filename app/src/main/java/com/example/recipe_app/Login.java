@@ -86,8 +86,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     Does not return anything, sends user to next activity
      */
     private void signIn() {
-        // convert inputs to strings
-        String email = et_email.getText().toString();
+        // convert inputs to strings, final because passing it to homePage
+        final String email = et_email.getText().toString();
         String password = et_password.getText().toString();
         // firebase authentication
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener
@@ -98,7 +98,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 // user was able to login, move him to home page activity
                 if (task.isSuccessful()) {
                     Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Login.this, HomePage.class));
+                    startActivity(new Intent(Login.this, HomePage.class)
+                            .putExtra("email", email));
                 } // could not login, display error
                 else if (!task.isSuccessful()) {
                     String errorCode = ((FirebaseAuthException) task.getException()).getMessage();
