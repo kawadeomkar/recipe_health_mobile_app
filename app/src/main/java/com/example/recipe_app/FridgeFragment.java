@@ -77,6 +77,7 @@ public class FridgeFragment extends Fragment implements View.OnClickListener, Ad
     {
         String email = "";
         Bundle bundle = this.getArguments();
+        email = bundle.getString("email");
 
         db = FirebaseFirestore.getInstance();
         docRef = db.collection("users").document(email)
