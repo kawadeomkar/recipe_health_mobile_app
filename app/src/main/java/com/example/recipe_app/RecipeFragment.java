@@ -1,6 +1,7 @@
 package com.example.recipe_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,7 +67,6 @@ public class RecipeFragment extends Fragment {
         return view;
     }
 
-
     // create listview and display recipes
     private void handleRecipeFragmentAdapter() {
         Context context = getActivity().getApplicationContext();
@@ -76,6 +76,10 @@ public class RecipeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // todo: move to new activity for selected recipe
+                RecipeTemp recipe = recipeTempList.get(position);
+                String recipeId = recipe.getId();
+                startActivity(new Intent(getActivity(), RecipeInformation.class)
+                        .putExtra("recipeId", recipeId));
             }
         });
     }

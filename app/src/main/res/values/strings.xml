@@ -20,5 +20,6 @@
         <item>Cut fat!</item>
         <item>Maintain!</item>
     </string-array>
+    <string name="title_activity_recipe_information">recipeInformation</string>
 
 </resources>

@@ -32,9 +32,9 @@ public class SpoonAPI  {
     }
 
     // returns url query for getting a recipe's full information given ID
-    public String getRecipeIDURL(int id) {
+    public String getRecipeIDURL(String id) {
         recipeFull = new RecipeFull();
-        String url_query = url_getRecipeWithID1 + Integer.toString(id) + url_getRecipeWithID2;
+        String url_query = url_getRecipeWithID1 + id  + url_getRecipeWithID2;
         return url_query;
     }
 
@@ -183,6 +183,12 @@ public class SpoonAPI  {
             }
             if (response.has("image")) {
                 recipeFull.setImage(response.getString("image"));
+            }
+            if (response.has("servings")) {
+                recipeFull.setServings(response.getInt("servings"));
+            }
+            if (response.has("instructions")) {
+                recipeFull.setInstructions(response.getString("instructions"));
             }
 
             JSONArray ingredients_json = response.getJSONArray("extendedIngredients");
