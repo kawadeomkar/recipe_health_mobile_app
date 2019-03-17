@@ -38,6 +38,9 @@ public class HomePage extends AppCompatActivity {
                         case R.id.nav_account:
                             selectedFragment = new AccountFragment();
                             break;
+
+                        case R.id.nav_favorites:
+                            selectedFragment = new FavoritesFragment();
                     }
 
                     FragmentManager fm = getSupportFragmentManager();
