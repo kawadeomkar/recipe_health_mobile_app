@@ -1,10 +1,5 @@
 package com.example.recipe_app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +22,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class FridgeFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
@@ -36,49 +35,42 @@ public class FridgeFragment extends Fragment implements View.OnClickListener, Ad
     private ListView itemsList;
     private DocumentReference docRef;
     private View view;
-
-    private ArrayList<String> items;
+    private String email;
+    private List<String> ingredients;
     private ArrayAdapter<String> adapter;
-
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
     final String TAG = "FridgeFragment";
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         view = inflater.inflate(R.layout.fragment_fridge, container, false);
 
+        Bundle bundle = this.getArguments();
+        email = bundle.getString("email");
         itemET = view.findViewById(R.id.item_edit_text);
         btn = view.findViewById(R.id.add_btn);
         saveBtn = view.findViewById(R.id.save_btn);
-
         itemsList = view.findViewById(R.id.ing_list);
 
-        items = FileHelper.readData(getActivity());
+        //ingredients = FileHelper.readData(getActivity());
 
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items);
-        itemsList.setAdapter(adapter);
+        loadIngredients();
 
         btn.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
-
-
         itemsList.setOnItemClickListener(this);
 
-
-        loadIngredients();
         return view;
     }
 
+    // load ingredients from firebase given email
     public void loadIngredients()
     {
-        String email = "";
-        Bundle bundle = this.getArguments();
-        email = bundle.getString("email");
-
         db = FirebaseFirestore.getInstance();
         docRef = db.collection("users").document(email)
                 .collection("activities").document("ingredients");
@@ -89,11 +81,11 @@ public class FridgeFragment extends Fragment implements View.OnClickListener, Ad
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        System.out.println("here");
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        System.out.println("test");
-                        System.out.println(document.getData().get("ingredients"));
-//                        itemsList = (ListView)(document.getData().get("ingredients"));
+                        ingredients = (List<String>)(document.getData().get("ingredients"));
+                        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
+                                ingredients);
+                        itemsList.setAdapter(adapter);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -107,26 +99,20 @@ public class FridgeFragment extends Fragment implements View.OnClickListener, Ad
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
+            // add button
             case R.id.add_btn:
-                System.out.println("2");
                 String itemEntered = itemET.getText().toString();
                 adapter.add(itemEntered);
                 itemET.setText("");
-                FileHelper.writeData(items, getActivity());
                 Toast.makeText(getActivity(), "Ingredient Added", Toast.LENGTH_SHORT).show();
                 break;
-
+            // save button
             case R.id.save_btn:
-                String email = "";
-                Bundle bundle = this.getArguments();
-                email = bundle.getString("email");
-                Map<String, ArrayList<String>> ingMap = new HashMap<>();
+                Map<String, Object> ingMap = new HashMap<>();
 
-
-
-                ingMap.put("ingredients", items);
-
-                db.collection("users").document(email).collection("activities").document("ingredients").set(ingMap)
+                ingMap.put("ingredients", ingredients);
+                db.collection("users").document(email).collection("activities")
+                        .document("ingredients").set(ingMap)
                         .addOnCompleteListener(new OnCompleteListener<Void>()
                         {
                             @Override
@@ -136,10 +122,9 @@ public class FridgeFragment extends Fragment implements View.OnClickListener, Ad
                                 {
                                     Toast.makeText(getActivity(), "Ingredient Saved", Toast.LENGTH_SHORT).show();
                                 }
-                                else
-                                    {
+                                else {
                                         Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
-                                    }
+                                }
                             }
                         });
 
@@ -149,9 +134,8 @@ public class FridgeFragment extends Fragment implements View.OnClickListener, Ad
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        items.remove(position);
+        ingredients.remove(position);
         adapter.notifyDataSetChanged();
-        FileHelper.writeData(items, getActivity());
         Toast.makeText(getActivity(), "Ingredient Deleted", Toast.LENGTH_SHORT).show();
     }
 
