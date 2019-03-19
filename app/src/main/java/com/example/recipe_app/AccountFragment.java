@@ -73,6 +73,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                         temp = getView().findViewById(R.id.editHeight);
                         temp.setText(doc.get("height").toString());
 
+                        // Set calories text field to calories in database
+//                        temp = getView().findViewById(R.id.calories);
+//                        temp.setText(doc.get("TDEE").toString());
+
+
                         // Set gender spinner field to gender in database
                         temp2 = getView().findViewById(R.id.editGender);
 
@@ -136,6 +141,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                 // save weight_goal in class variable
                 temp2 = getView().findViewById(R.id.editWeightGoal);
                 weight_goal = temp2.getSelectedItem().toString();
+
 
                 Spinner spin_act = getView().findViewById(R.id.editActivityLevel);
                 activity_level = spin_act.getSelectedItem().toString();
