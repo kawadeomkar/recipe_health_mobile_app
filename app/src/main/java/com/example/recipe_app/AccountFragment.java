@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class AccountFragment extends Fragment implements View.OnClickListener{
 
-    String age, weight, height, gender, weight_goal;
+    String age, weight, height, gender, weight_goal, activity_level;
     ArrayList<String> dietary_restrictions;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -132,12 +132,18 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                 temp2 = getView().findViewById(R.id.editWeightGoal);
                 weight_goal = temp2.getSelectedItem().toString();
 
+                Spinner spin_act = getView().findViewById(R.id.editActivityLevel);
+                activity_level = spin_act.getSelectedItem().toString();
+
                 System.out.println("Changing values:" +
                         "\nAge = " + age +
                         "\nWeight = " + weight +
                         "\nHeight = " + height +
                         "\nGender = " + gender +
-                        "\nWeight Goal = " + weight_goal);
+                        "\nWeight Goal = " + weight_goal +
+                        "\nActivity Level = " + activity_level);
+
+                String TDEE = Double.toString(calculateTDEE(weight, height, age, gender, activity_level));
 
                 Map<String, Object> userMap = new HashMap<>();
                 userMap.put("age", age);
@@ -145,6 +151,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                 userMap.put("height", height);
                 userMap.put("gender", gender);
                 userMap.put("weight_goal", weight_goal);
+                userMap.put("TDEE", TDEE);
 
                 // TODO: get the variable email, similar to RegistrationInfo.java
                 //getActivity().getIntent().getStringExtra("email_from_reg"); DOESNT WORK
@@ -158,5 +165,51 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                         .document("account_information").update(userMap);
 
         }
+    }
+
+    private double calculateTDEE(String weight, String height, String age, String gender, String activity_level) {
+
+
+        double weight_kg = Integer.parseInt(weight) * 0.453592;
+        double height_cm = Integer.parseInt(height) * 2.54;
+        double BMR = 0;
+        double TDEE = 0;
+
+        if (gender.equals("Male")) {
+            BMR = 9.99 * weight_kg + 6.25 * height_cm - 4.92 * Integer.parseInt(age) + 5;
+
+            if (activity_level.equals("Sedentary"))
+            {
+                TDEE = BMR * 1.2;
+            } else if (activity_level.equals("Lightly Active"))
+            {
+                TDEE = BMR * 1.375;
+            } else if (activity_level.equals("Moderately Active"))
+            {
+                TDEE = BMR * 1.55;
+            } else if (activity_level.equals("Very Active"))
+            {
+                TDEE = BMR * 1.725;
+            } else if (activity_level.equals("Highly Active"))
+            {
+                TDEE = BMR * 1.9;
+            }
+        } else if (gender.equals("Female")) {
+            BMR = 9.99 * weight_kg + 6.25 * height_cm - 5 - 4.92 * Integer.parseInt(age) - 161;
+            if (activity_level.equals("Sedentary")) {
+                TDEE = BMR * 1.2;
+            } else if (activity_level.equals("Lightly Active")) {
+                TDEE = BMR * 1.375;
+            } else if (activity_level.equals("Moderately Active")) {
+                TDEE = BMR * 1.55;
+            } else if (activity_level.equals("Very Active")) {
+                TDEE = BMR * 1.725;
+            } else if (activity_level.equals("Highly Active")) {
+                TDEE = BMR * 1.9;
+            }
+        }
+
+        return TDEE;
+
     }
 }
