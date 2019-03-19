@@ -19,15 +19,15 @@
         android:entries="@array/activity_level"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.787"
+        app:layout_constraintHorizontal_bias="0.805"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_reg_goal"
-        app:layout_constraintVertical_bias="0.021" />
+        app:layout_constraintTop_toBottomOf="@+id/_activity_level"
+        app:layout_constraintVertical_bias="0.09" />
 
     <TextView
         android:id="@+id/_activity_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="99dp"
+        android:layout_height="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -37,10 +37,10 @@
         android:text="Activity Level"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.757"
+        app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_reg_height"
-        app:layout_constraintVertical_bias="0.176" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_reg_gender"
+        app:layout_constraintVertical_bias="0.214" />
 
     <Spinner
         android:id="@+id/spin_reg_goal"
@@ -55,10 +55,10 @@
         android:entries="@array/weight_goal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/_reg_goal"
-        app:layout_constraintVertical_bias="0.021" />
+        app:layout_constraintVertical_bias="0.082" />
 
     <EditText
         android:id="@+id/et_reg_height"
@@ -77,7 +77,7 @@
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reg_height"
-        app:layout_constraintVertical_bias="0.055" />
+        app:layout_constraintVertical_bias="0.07" />
 
     <Spinner
         android:id="@+id/spin_reg_gender"
@@ -92,7 +92,7 @@
         android:entries="@array/genders"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.805"
+        app:layout_constraintHorizontal_bias="0.787"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reg_gender"
         app:layout_constraintVertical_bias="0.0" />
@@ -106,19 +106,19 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="528dp"
+        android:layout_marginBottom="508dp"
         android:text="Height (inches)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintHorizontal_bias="0.221"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_reg_age"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tv_reg_gender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="97dp"
+        android:layout_height="21dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -128,10 +128,10 @@
         android:text="Gender"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
+        app:layout_constraintHorizontal_bias="0.765"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_reg_weight"
-        app:layout_constraintVertical_bias="0.007" />
+        app:layout_constraintVertical_bias="0.052" />
 
     <EditText
         android:id="@+id/et_reg_age"
@@ -181,10 +181,10 @@
         android:text="Weight Goal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
+        app:layout_constraintHorizontal_bias="0.207"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reg_height"
-        app:layout_constraintVertical_bias="0.176" />
+        app:layout_constraintVertical_bias="0.215" />
 
     <TextView
         android:id="@+id/tv_reg_weight"
@@ -274,12 +274,12 @@
         app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spin_reg_goal"
-        app:layout_constraintVertical_bias="0.173" />
+        app:layout_constraintVertical_bias="0.194" />
 
     <EditText
         android:id="@+id/et_reginfo_diet"
         android:layout_width="330dp"
-        android:layout_height="152dp"
+        android:layout_height="84dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -290,9 +290,9 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.569"
+        app:layout_constraintHorizontal_bias="0.584"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reginfo_diet"
-        app:layout_constraintVertical_bias="0.017" />
+        app:layout_constraintVertical_bias="0.101" />
 
 </android.support.constraint.ConstraintLayout>

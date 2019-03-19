@@ -29,13 +29,17 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
-
+    private DocumentReference docRef;
+    private String email;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         System.out.println("RUNNING ON CREATE VIEW");
+        Bundle bundle = this.getArguments();
+        email = bundle.getString("email");
         firebaseAuth = FirebaseAuth.getInstance();
+
         super.onCreate(savedInstanceState);
         return inflater.inflate(R.layout.fragment_account, container, false);
     }
@@ -43,11 +47,10 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         getView().findViewById(R.id.save_button).setOnClickListener(this);
-        String email = "";
-        Bundle bundle = this.getArguments();
-        email = bundle.getString("email");
-        DocumentReference currentInfo = db.collection("users").document(email);
-        currentInfo.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        docRef = db.collection("users").document(email)
+                .collection("activities").document("account_information");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 EditText temp;
@@ -56,23 +59,25 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         // Get the data back
-                        Object doc = document.getData();
+                        Map<String, Object> doc = document.getData();
 
                         // Set age text field to age in database
                         temp = getView().findViewById(R.id.editAge);
-                        temp.setText(((Map) doc).get("age").toString());
+                        temp.setText(doc.get("age").toString());
 
                         // Set weight text field to weight in database
                         temp = getView().findViewById(R.id.editWeight);
-                        temp.setText(((Map) doc).get("weight").toString());
+                        temp.setText(doc.get("weight").toString());
 
                         // Set height text field to height in database
                         temp = getView().findViewById(R.id.editHeight);
-                        temp.setText(((Map) doc).get("height").toString());
+                        temp.setText(doc.get("height").toString());
 
                         // Set gender spinner field to gender in database
                         temp2 = getView().findViewById(R.id.editGender);
-                        String gen = ((Map) doc).get("gender").toString();
+
+                        String gen = (doc.get("gender").toString());
+
                         if (gen.equals("Male")) {
                             temp2.setSelection(0);
                         }

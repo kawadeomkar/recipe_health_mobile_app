@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/iv_fav_recipe"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="5dp"
@@ -16,26 +16,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imageView"
+        android:layout_toRightOf="@+id/iv_fav_recipe"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewName"
+            android:id="@+id/tv_fav_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:textAppearance="?android:textAppearanceLarge"
+            android:layout_toRightOf="@+id/btn_fav_delete"
             android:textColor="#000000"
             tools:text="TextView" />
 
-        <TextView
-            android:id="@+id/textViewEmail"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_fav_delete"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#000000"
-            tools:text="TextView" />
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:text="X"
+            android:layout_gravity="right"/>
 
     </LinearLayout>
+
+
+
 </RelativeLayout>

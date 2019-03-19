@@ -75,11 +75,15 @@ public class RecipeFragment extends Fragment {
         recipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // todo: move to new activity for selected recipe
+                // information to send to recipeInformation activity
                 RecipeTemp recipe = recipeTempList.get(position);
                 String recipeId = recipe.getId();
+
+                Bundle args = new Bundle();
+                args.putString("email", email);
+                args.putString("recipeId", recipeId);
                 startActivity(new Intent(getActivity(), RecipeInformation.class)
-                        .putExtra("recipeId", recipeId));
+                        .putExtras(args));
             }
         });
     }

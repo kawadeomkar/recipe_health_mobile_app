@@ -36,7 +36,7 @@ public class RecipeComplexAdapter extends ArrayAdapter<RecipeTemp> {
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder vh;
         if (convertView == null) {
-            View view = mInflater.inflate(R.layout.recipefragmentrecipeview, parent, false);
+            View view = mInflater.inflate(R.layout.fragment_recipe_row, parent, false);
             vh = ViewHolder.create((RelativeLayout) view);
             view.setTag(vh);
         } else {
@@ -71,9 +71,9 @@ public class RecipeComplexAdapter extends ArrayAdapter<RecipeTemp> {
         }
 
         public static ViewHolder create(RelativeLayout rootView) {
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
-            TextView textViewName = (TextView) rootView.findViewById(R.id.textViewName);
-            TextView textViewEmail = (TextView) rootView.findViewById(R.id.textViewEmail);
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.iv_recipe_results);
+            TextView textViewName = (TextView) rootView.findViewById(R.id.tv_recipeFrag_title);
+            TextView textViewEmail = (TextView) rootView.findViewById(R.id.tv_recipeFrag_info);
             return new ViewHolder(rootView, imageView, textViewName, textViewEmail);
         }
     }

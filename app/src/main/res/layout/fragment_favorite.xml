@@ -14,34 +14,28 @@
         android:orientation="horizontal">
 
 
-        <EditText
-            android:id="@+id/item_edit_text"
-            android:hint="Enter Ingredient"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4" />
-
-        <Button
-            android:id="@+id/add_btn"
-            android:text="add"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/save_btn"
-            android:text="Save"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:text="Favorited recipes!"
+            android:textSize="24sp"
+            android:gravity="center"/>
 
 
     </LinearLayout>
 
     <ListView
-        android:id="@+id/ing_list"
+        android:id="@+id/lv_fav_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="514dp" />
+
+    <Button
+        android:id="@+id/btn_fav_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save" />
 
 
 </LinearLayout>
