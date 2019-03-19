@@ -22,4 +22,13 @@
     </string-array>
     <string name="title_activity_recipe_information">recipeInformation</string>
 
+    <string-array name="activity_level">
+        <item>Sedentary</item>
+        <item>Lightly Active</item>
+        <item>Moderately Active</item>
+        <item>Very Active</item>
+        <item>Highly Active</item>
+
+    </string-array>
+
 </resources>
