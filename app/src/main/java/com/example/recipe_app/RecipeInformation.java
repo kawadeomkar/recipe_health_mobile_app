@@ -97,7 +97,8 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Toast.makeText(RecipeInformation.this, "Could not save: "
+                                + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -102,7 +102,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         String diet = et_diet.getText().toString();
 
         if (age.isEmpty() || weight.isEmpty() || height.isEmpty() || gender.isEmpty()
-                || weight_goal.isEmpty() || diet.isEmpty() || activity_level.isEmpty()) {
+                || weight_goal.isEmpty() || activity_level.isEmpty()) {
             Toast.makeText(this, "You're forgetting a field!",
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -155,6 +155,10 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
                                 e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        // hacky fix to create favorite section
+        db.collection("users").document(email).collection("activities")
+                .document("favorite_recipes").set(new HashMap<>());
     }
 
     // set spinner listeners, currently do nothing on item selected and gives a message if no item

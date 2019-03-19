@@ -183,20 +183,15 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         if (gender.equals("Male")) {
             BMR = 9.99 * weight_kg + 6.25 * height_cm - 4.92 * Integer.parseInt(age) + 5;
 
-            if (activity_level.equals("Sedentary"))
-            {
+            if (activity_level.equals("Sedentary")) {
                 TDEE = BMR * 1.2;
-            } else if (activity_level.equals("Lightly Active"))
-            {
+            } else if (activity_level.equals("Lightly Active")) {
                 TDEE = BMR * 1.375;
-            } else if (activity_level.equals("Moderately Active"))
-            {
+            } else if (activity_level.equals("Moderately Active")) {
                 TDEE = BMR * 1.55;
-            } else if (activity_level.equals("Very Active"))
-            {
+            } else if (activity_level.equals("Very Active")) {
                 TDEE = BMR * 1.725;
-            } else if (activity_level.equals("Highly Active"))
-            {
+            } else if (activity_level.equals("Highly Active")) {
                 TDEE = BMR * 1.9;
             }
         } else if (gender.equals("Female")) {

@@ -1,6 +1,7 @@
 package com.example.recipe_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -83,21 +85,20 @@ public class FavoritesFragment extends Fragment {
             recipeInfo.put("Title", favoriteList.get(i).getTitle());
             firestoreFavFormat.put(favoriteList.get(i).getRecipeID(), recipeInfo);
         }
-         docRef.set(firestoreFavFormat).addOnSuccessListener(new OnSuccessListener<Void>() {
+        docRef.set(firestoreFavFormat).addOnSuccessListener(new OnSuccessListener<Void>() {
              @Override
              public void onSuccess(Void aVoid) {
                  Toast.makeText(getContext(), "Changes saved!",
                          Toast.LENGTH_SHORT).show();
              }
-         }).addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener() {
              @Override
              public void onFailure(@NonNull Exception e) {
                  Toast.makeText(getContext(), "Could not save, error: " + e.getMessage(),
                          Toast.LENGTH_SHORT).show();
              }
-         });;
+        });
     }
-
 
     // retrieve ingredients from firestore with email
     private void retrieveFavorites() {
@@ -128,6 +129,16 @@ public class FavoritesFragment extends Fragment {
         Context context = getActivity().getApplicationContext();
         favoriteComplexAdapter = new FavoriteComplexAdapter(context, favoriteList);
         favoriteListView.setAdapter(favoriteComplexAdapter);
+        favoriteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle args = new Bundle();
+                args.putString("email", email);
+                args.putString("recipeId", favoriteList.get(position).getRecipeID());
+                startActivity(new Intent(getActivity(), RecipeInformation.class)
+                        .putExtras(args));
+            }
+        });
     }
 
     // parse databse input into list<favorite>

@@ -62,8 +62,8 @@
 
     <EditText
         android:id="@+id/et_reg_height"
-        android:layout_width="125dp"
-        android:layout_height="36dp"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
