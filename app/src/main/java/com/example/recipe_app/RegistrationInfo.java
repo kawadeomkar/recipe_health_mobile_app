@@ -27,7 +27,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
     // Define class variables from the page
     private Button b_next;
     private EditText et_age, et_weight, et_height, et_diet;
-    private Spinner spin_gender, spin_weight_goal;
+    private Spinner spin_gender, spin_weight_goal, spin_activity_level;
 
     private static final String TAG = "Register.java";
     private static final String age = "age";
@@ -35,6 +35,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
     private static final String height = "height";
     private static final String gender = "gender";
     private static final String weight_goal = "weight_goal";
+    private static final String activity_level = "activity_level";
     private static final String favorites = "favorites";
     private static final String dietary_restrictions = "dietary_restrictions";
 
@@ -53,7 +54,8 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         et_weight = (EditText) findViewById(R.id.et_reg_height);
         et_height = (EditText) findViewById(R.id.et_reg_height);
         spin_gender = (Spinner) findViewById(R.id.spin_reg_gender);
-        spin_weight_goal = (Spinner) findViewById(R.id.spin_reg_gender);
+        spin_weight_goal = (Spinner) findViewById(R.id.spin_reg_goal);
+        spin_activity_level = (Spinner) findViewById(R.id.spin_reg_activity);
         b_next = (Button) findViewById(R.id.btn_reg_next);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -95,6 +97,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         String height = et_height.getText().toString();
         String gender = spin_gender.getSelectedItem().toString();
         String weight_goal = spin_weight_goal.getSelectedItem().toString();
+        String activity_level = spin_activity_level.getSelectedItem().toString();
         String diet = et_diet.getText().toString();
 
         if (age.isEmpty() || weight.isEmpty() || height.isEmpty() || gender.isEmpty()
@@ -116,6 +119,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         String user_height = et_height.getText().toString();
         String user_gender = spin_gender.getSelectedItem().toString();
         String user_weight_goal = spin_weight_goal.getSelectedItem().toString();
+        String user_activity_level = spin_activity_level.getSelectedItem().toString();
         String email = getIntent().getStringExtra("email_from_reg");
         List<String> diet = Arrays.asList(et_diet.getText().toString().split(","));
 
@@ -125,6 +129,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         user.put(height, user_height);
         user.put(gender, user_gender);
         user.put(weight_goal, user_weight_goal);
+        user.put(activity_level, user_activity_level);
         user.put(favorites, new ArrayList<String>());
         user.put(dietary_restrictions, diet);
 

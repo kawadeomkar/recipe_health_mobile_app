@@ -7,6 +7,42 @@
     tools:context=".RegistrationInfo">
 
     <Spinner
+        android:id="@+id/spin_reg_activity"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:entries="@array/activity_level"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.787"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/_reg_goal"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <TextView
+        android:id="@+id/_activity_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Activity Level"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.757"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_reg_height"
+        app:layout_constraintVertical_bias="0.176" />
+
+    <Spinner
         android:id="@+id/spin_reg_goal"
         android:layout_width="122dp"
         android:layout_height="wrap_content"
@@ -19,10 +55,10 @@
         android:entries="@array/weight_goal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.113"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/_reg_goal"
-        app:layout_constraintVertical_bias="0.038" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <EditText
         android:id="@+id/et_reg_height"
@@ -74,9 +110,10 @@
         android:text="Height (inches)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.208"
+        app:layout_constraintHorizontal_bias="0.191"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_reg_age" />
+        app:layout_constraintTop_toBottomOf="@+id/et_reg_age"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tv_reg_gender"
@@ -144,9 +181,10 @@
         android:text="Weight Goal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.116"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reg_height"
-        app:layout_constraintVertical_bias="0.156" />
+        app:layout_constraintVertical_bias="0.176" />
 
     <TextView
         android:id="@+id/tv_reg_weight"
@@ -215,10 +253,10 @@
         android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spin_reg_goal"
-        app:layout_constraintVertical_bias="0.66" />
+        app:layout_constraintVertical_bias="0.851" />
 
     <TextView
         android:id="@+id/tv_reginfo_diet"
@@ -233,9 +271,10 @@
         android:text="Dietary restrictions (Separate with commas please!)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spin_reg_goal"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintVertical_bias="0.173" />
 
     <EditText
         android:id="@+id/et_reginfo_diet"
@@ -251,9 +290,9 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.569"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reginfo_diet"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.017" />
 
 </android.support.constraint.ConstraintLayout>
