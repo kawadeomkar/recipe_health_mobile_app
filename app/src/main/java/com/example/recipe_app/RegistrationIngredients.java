@@ -42,7 +42,7 @@ public class RegistrationIngredients extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.field, null);
         // Add the new row before the add field button.
-        parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
+        parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 2);
     }
 
     public void onDelete(View v) {
