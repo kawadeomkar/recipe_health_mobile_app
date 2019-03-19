@@ -56,6 +56,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         et_height = (EditText) findViewById(R.id.et_reg_height);
         spin_gender = (Spinner) findViewById(R.id.spin_reg_gender);
         spin_weight_goal = (Spinner) findViewById(R.id.spin_reg_goal);
+        spin_activity_level = (Spinner) findViewById(R.id.spin_reg_activity);
         b_next = (Button) findViewById(R.id.btn_reg_next);
 
         firebaseAuth = FirebaseAuth.getInstance();
