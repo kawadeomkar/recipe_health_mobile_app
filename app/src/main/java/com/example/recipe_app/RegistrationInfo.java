@@ -35,7 +35,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
     private static final String height = "height";
     private static final String gender = "gender";
     private static final String weight_goal = "weight_goal";
-    private static final String activity_level = "activity_level";
+    private static final String TDEE = "TDEE";
     private static final String favorites = "favorites";
     private static final String dietary_restrictions = "dietary_restrictions";
 
@@ -51,7 +51,7 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         // set class variables equal to their inputs
         et_diet = (EditText) findViewById(R.id.et_reginfo_diet);
         et_age = (EditText) findViewById(R.id.et_reg_age);
-        et_weight = (EditText) findViewById(R.id.et_reg_height);
+        et_weight = (EditText) findViewById(R.id.et_reg_weight);
         et_height = (EditText) findViewById(R.id.et_reg_height);
         spin_gender = (Spinner) findViewById(R.id.spin_reg_gender);
         spin_weight_goal = (Spinner) findViewById(R.id.spin_reg_goal);
@@ -114,6 +114,8 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
     // save user to database
     // note: need to implement some sort of db fail case, it will continue whether it fails or not
     public void saveUser() {
+
+
         String user_age = et_age.getText().toString();
         String user_weight = et_weight.getText().toString();
         String user_height = et_height.getText().toString();
@@ -123,13 +125,15 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         String email = getIntent().getStringExtra("email_from_reg");
         List<String> diet = Arrays.asList(et_diet.getText().toString().split(","));
 
+        String user_TDEE = Double.toString(calculateTDEE(user_weight, user_height, user_age, user_gender, user_activity_level));
+
         Map<String, Object> user = new HashMap<>();
         user.put(age, user_age);
         user.put(weight, user_weight);
         user.put(height, user_height);
         user.put(gender, user_gender);
         user.put(weight_goal, user_weight_goal);
-        user.put(activity_level, user_activity_level);
+        user.put(TDEE, user_TDEE);
         user.put(favorites, new ArrayList<String>());
         user.put(dietary_restrictions, diet);
 
@@ -179,6 +183,52 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
                         "Please enter a weight goal", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private double calculateTDEE(String weight, String height, String age, String gender, String activity_level) {
+
+
+        double weight_kg = Integer.parseInt(weight) * 0.453592;
+        double height_cm = Integer.parseInt(height) * 2.54;
+        double BMR = 0;
+        double TDEE = 0;
+
+        if (gender.equals("Male")) {
+            BMR = 9.99 * weight_kg + 6.25 * height_cm - 4.92 * Integer.parseInt(age) + 5;
+
+            if (activity_level.equals("Sedentary"))
+            {
+                TDEE = BMR * 1.2;
+            } else if (activity_level.equals("Lightly Active"))
+            {
+                TDEE = BMR * 1.375;
+            } else if (activity_level.equals("Moderately Active"))
+            {
+                TDEE = BMR * 1.55;
+            } else if (activity_level.equals("Very Active"))
+            {
+                TDEE = BMR * 1.725;
+            } else if (activity_level.equals("Highly Active"))
+            {
+                TDEE = BMR * 1.9;
+            }
+        } else if (gender.equals("Female")) {
+            BMR = 9.99 * weight_kg + 6.25 * height_cm - 5 - 4.92 * Integer.parseInt(age) - 161;
+            if (activity_level.equals("Sedentary")) {
+                TDEE = BMR * 1.2;
+            } else if (activity_level.equals("Lightly Active")) {
+                TDEE = BMR * 1.375;
+            } else if (activity_level.equals("Moderately Active")) {
+                TDEE = BMR * 1.55;
+            } else if (activity_level.equals("Very Active")) {
+                TDEE = BMR * 1.725;
+            } else if (activity_level.equals("Highly Active")) {
+                TDEE = BMR * 1.9;
+            }
+        }
+
+        return TDEE;
+
     }
 
 }
