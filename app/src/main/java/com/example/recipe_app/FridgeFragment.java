@@ -16,8 +16,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -71,6 +74,12 @@ public class FridgeFragment extends Fragment implements View.OnClickListener, Ad
     // load ingredients from firebase given email
     public void loadIngredients()
     {
+
+        String email = "";
+        Bundle bundle = this.getArguments();
+        email = bundle.getString("email");
+
+
         db = FirebaseFirestore.getInstance();
         docRef = db.collection("users").document(email)
                 .collection("activities").document("ingredients");
@@ -122,8 +131,10 @@ public class FridgeFragment extends Fragment implements View.OnClickListener, Ad
                                 {
                                     Toast.makeText(getActivity(), "Ingredient Saved", Toast.LENGTH_SHORT).show();
                                 }
-                                else {
-                                        Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
+                                else
+                                {
+                                    Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
+
                                 }
                             }
                         });
