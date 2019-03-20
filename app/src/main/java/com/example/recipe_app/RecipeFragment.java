@@ -106,19 +106,18 @@ public class RecipeFragment extends Fragment {
                     if (document.exists()) {
                         // Get the data back
                         Map<String, Object> doc = document.getData();
-                        Map<String, Integer> randomCuisines = (Map<String, Integer>) doc.get("learning_random");
+                        Map<String, String> randomCuisines = (Map<String, String>) doc.get("learning_random");
                         String allowedCalories = doc.get("caloriesLeft").toString();
 
-                        List<Map.Entry<String, Integer>> cuisineEntries = new ArrayList<>(randomCuisines.entrySet());
+                        List<Map.Entry<String, String>> cuisineEntries = new ArrayList<>(randomCuisines.entrySet());
                         int max = 0;
                         String cuisine = "";
 
-                        Log.d("TAGGGGGG", cuisineEntries.get(0).getValue().getClass().getSimpleName());
-
                         for (int i=0; i<cuisineEntries.size(); ++i) {
-                            if ((int)cuisineEntries.get(i).getValue() > max) {
+                            String temp = cuisineEntries.get(i).getValue();
+                            if (Integer.parseInt(temp) > max) {
                                 cuisine = cuisineEntries.get(i).getKey();
-                                max = (int) cuisineEntries.get(i).getValue();
+                                max = Integer.parseInt(temp);
                             }
                         }
 
