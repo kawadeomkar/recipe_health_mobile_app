@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,43 +94,69 @@ public class RecipeFragment extends Fragment {
 
     // call api with given ingredients
     private void retrieveRecipesWithIngredients() {
-        Log.d("RECIPEFRAGMENT", "MADE IT TO THE API CALL");
-        final SpoonAPI spoon = new SpoonAPI();
-        final String header = spoon.getHeaderKey();
-        // hardcoded value for now
-        numberRecipesToShow = 10;
-        String url = spoon.getRecipeComplexURL(ingredients, numberRecipesToShow);
-        requestQueue = Volley.newRequestQueue(getActivity());
-        Log.d("RECIPEFRAGMENT", "ABOUT TO DO THE API CALL");
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        spoon.getRecipeComplexHelper(response);
-                        Log.d("RECIPEFRAGMENT", "THIS IS THE SPOON RESULT: "
-                                + spoon.getRecipeComplex());
-                        recipeTempList = spoon.getRecipeComplex();
-                        handleRecipeFragmentAdapter();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth firebaseAuth;
+
+        docRef = db.collection("users").document(email)
+                .collection("activities").document("account_information");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Get the data back
+                        Map<String, Object> doc = document.getData();
+
+                        String allowedCalories = doc.get("caloriesLeft").toString();
+
+                        Log.d("RECIPEFRAGMENT", "MADE IT TO THE API CALL");
+                        final SpoonAPI spoon = new SpoonAPI();
+                        final String header = spoon.getHeaderKey();
+                        // hardcoded value for now
+                        numberRecipesToShow = 10;
+                        String url = spoon.getRecipeComplexURL(ingredients, numberRecipesToShow, (int) Float.parseFloat(allowedCalories) );
+                        requestQueue = Volley.newRequestQueue(getActivity());
+                        Log.d("RECIPEFRAGMENT", "ABOUT TO DO THE API CALL");
+                        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        spoon.getRecipeComplexHelper(response);
+                                        Log.d("RECIPEFRAGMENT", "THIS IS THE SPOON RESULT: "
+                                                + spoon.getRecipeComplex());
+                                        recipeTempList = spoon.getRecipeComplex();
+                                        handleRecipeFragmentAdapter();
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        })  {
+
+                            /**
+                             * Passing some request headers
+                             */
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                HashMap<String, String> headers = new HashMap<String, String>();
+                                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                                headers.put("X-RapidAPI-Key", header);
+                                return headers;
+                            }
+                        };
+                        requestQueue.add(req);
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
+                    else {
+                        Log.d("Register.java", "No such doc");
+                    }
+                }
+                else {
+                    Log.d("Register.java", "get failed with " + task.getException());
+                }
             }
-        })  {
-
-            /**
-             * Passing some request headers
-             */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
-                headers.put("X-RapidAPI-Key", header);
-                return headers;
-            }
-        };
-        requestQueue.add(req);
+        });
     }
 
     // retrieve ingredients from firestore with email

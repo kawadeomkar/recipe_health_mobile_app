@@ -16,8 +16,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +140,9 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         user.put(favorites, new ArrayList<String>());
         user.put(dietary_restrictions, diet);
         user.put(activity_level, user_activity_level);
+        user.put("caloriesLeft", Integer.toString((int)Double.parseDouble(user_TDEE)));
+        Date date = new Date();
+        user.put("prevDate", date.toString());
 
         db.collection("users").document(email).collection("activities")
                 .document("account_information").set(user)
@@ -228,8 +233,14 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
                 TDEE = BMR * 1.9;
             }
         }
-
-        return TDEE;
+        if (this.weight_goal.contains("Bulk up!")) {
+            return TDEE * 1.1;
+        }
+        if (this.weight_goal.contains("Cut fat!")) {
+            return TDEE * 0.9;
+        }
+        else {
+            return TDEE;
+        }
     }
-
 }
