@@ -27,6 +27,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -59,7 +61,6 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
     private static final String recipeID = "RecipeID";
     private static final String title = "Title";
     private static final String image = "Image";
-
 
 
     @Override
@@ -106,6 +107,36 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
                                 + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        if (recipeFull.getCuisines().size() > 0 ) {
+            final RecipeFull recipeFinal = recipeFull;
+            final DocumentReference docRefAccount = db.collection("users").document(email)
+                    .collection("activities").document("account_information");
+            db.runTransaction(new Transaction.Function<Void>() {
+                @Override
+                public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                    DocumentSnapshot snapshot = transaction.get(docRefAccount);
+                    Map<String, Integer> newLearningRandom = (Map<String, Integer>) snapshot.get("learning_random");
+
+                    List<String> cuisines = recipeFinal.getCuisines();
+                    for (int i=0; i<cuisines.size(); ++i) {
+                        String temp = cuisines.get(i);
+                        int count = newLearningRandom.get(temp) + 1;
+                        newLearningRandom.put(temp, count);
+                    }
+                    transaction.update(docRefAccount, "learning_random", newLearningRandom);
+
+                    // Success
+                    return null;
+                }
+            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("RecipeInformation.java", "Transaction success!");
+                }
+            });
+        }
+
     }
 
     // override onclicks
@@ -122,7 +153,6 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.btn_eat:
                 changeCalories();
-                System.out.println("HIT EAT BUTTOM");
         }
     }
 

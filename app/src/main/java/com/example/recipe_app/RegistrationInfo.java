@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -41,6 +40,9 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
     private static final String favorites = "favorites";
     private static final String dietary_restrictions = "dietary_restrictions";
     private static final String activity_level = "activity_level";
+    private static final String learning_random = "learning_random";
+    private static final String caloriesLeft = "caloriesLeft";
+    private static final String prevDate = "prevDate";
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
@@ -131,6 +133,33 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
                 user_gender, user_activity_level));
 
         Map<String, Object> user = new HashMap<>();
+        Map<String, Integer> cuisines = new HashMap<>();
+        cuisines.put("african", 1);
+        cuisines.put("chinese", 1);
+        cuisines.put("korean", 1);
+        cuisines.put("japanese", 1);
+        cuisines.put("vietnamese", 1);
+        cuisines.put("thai", 1);
+        cuisines.put("irish", 1);
+        cuisines.put("italian", 1);
+        cuisines.put("spanish", 1);
+        cuisines.put("british", 1);
+        cuisines.put("indian", 1);
+        cuisines.put("mexican", 1);
+        cuisines.put("french", 1);
+        cuisines.put("eastern", 1);
+        cuisines.put("middle", 1);
+        cuisines.put("american", 1);
+        cuisines.put("jewish", 1);
+        cuisines.put("southern", 1);
+        cuisines.put("caribbean", 1);
+        cuisines.put("cajun", 1);
+        cuisines.put("greek", 1);
+        cuisines.put("nordic", 1);
+        cuisines.put("german", 1);
+        cuisines.put("european", 1);
+        cuisines.put("eastern", 1);
+
         user.put(age, user_age);
         user.put(weight, user_weight);
         user.put(height, user_height);
@@ -140,9 +169,10 @@ public class RegistrationInfo extends AppCompatActivity implements View.OnClickL
         user.put(favorites, new ArrayList<String>());
         user.put(dietary_restrictions, diet);
         user.put(activity_level, user_activity_level);
-        user.put("caloriesLeft", Integer.toString((int)Double.parseDouble(user_TDEE)));
+        user.put(caloriesLeft, Integer.toString((int)Double.parseDouble(user_TDEE)));
         Date date = new Date();
-        user.put("prevDate", date.toString());
+        user.put(prevDate, date.toString());
+        user.put(learning_random, cuisines);
 
         db.collection("users").document(email).collection("activities")
                 .document("account_information").set(user)

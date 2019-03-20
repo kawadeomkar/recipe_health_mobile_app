@@ -11,10 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -32,10 +29,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONObject;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class RecipeFragment extends Fragment {
 
@@ -65,7 +65,8 @@ public class RecipeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         recipeList = (ListView) view.findViewById (R.id.lv_recipe_frag);
-
+        // hardcoded value for now
+        numberRecipesToShow = 10;
         retrieveIngredients();
 
         return view;
@@ -107,15 +108,35 @@ public class RecipeFragment extends Fragment {
                     if (document.exists()) {
                         // Get the data back
                         Map<String, Object> doc = document.getData();
-
+                        Map<String, Integer> randomCuisines = (Map<String, Integer>) doc.get("learning_random");
                         String allowedCalories = doc.get("caloriesLeft").toString();
 
-                        Log.d("RECIPEFRAGMENT", "MADE IT TO THE API CALL");
+                        List<Map.Entry<String, Integer>> cuisineEntries = new ArrayList<>(randomCuisines.entrySet());
+                        Collections.sort(cuisineEntries, new Comparator<Map.Entry<String, Integer>>() {
+                            @Override
+                            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                                if (o1.getValue() > o2.getValue()) {
+                                    return o1.getValue();
+                                } else {
+                                    return o2.getValue();
+                                }
+                            }
+                        });
+
+                        Random random = new Random();
+                        String randCuisine;
+                        int determine = random.nextInt(2);
+                        if (determine == 0) {
+                            randCuisine = cuisineEntries.get(cuisineEntries.size()).getKey();
+                        } else {
+                            randCuisine = cuisineEntries.get(random.nextInt(cuisineEntries.size())).getKey();
+                        }
+
                         final SpoonAPI spoon = new SpoonAPI();
                         final String header = spoon.getHeaderKey();
-                        // hardcoded value for now
-                        numberRecipesToShow = 10;
-                        String url = spoon.getRecipeComplexURL(ingredients, numberRecipesToShow, (int) Float.parseFloat(allowedCalories) );
+
+                        String url = spoon.getRecipeComplexURL(ingredients, numberRecipesToShow,
+                                (int) Float.parseFloat(allowedCalories), randCuisine);
                         requestQueue = Volley.newRequestQueue(getActivity());
                         Log.d("RECIPEFRAGMENT", "ABOUT TO DO THE API CALL");
                         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -184,4 +205,5 @@ public class RecipeFragment extends Fragment {
         });
 
     }
+
 }

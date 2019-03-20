@@ -48,7 +48,7 @@ public class SpoonAPI  {
     url_query: adds on parameters
     result: returns a list of recipe objects
      */
-    public String getRecipeComplexURL(List<String> ingredients, int number, int maxCalories) {
+    public String getRecipeComplexURL(List<String> ingredients, int number, int maxCalories, String cuisine) {
         recipeComplex = new ArrayList<>();
         String ranking = "0";
         String offset = "0";
@@ -64,8 +64,8 @@ public class SpoonAPI  {
         String url_query = url_complexRecipe + "?number=" + Integer.toString(number) + "&minFat=" +
                 minFat + "&maxCalories=" + maxCalories + "&minProtein=" + minProtein + "&minCarbs="
                 + minCarbs + "&ranking=" + ranking + "&offset=" + offset + "&limitLicense="
-                + limitLicense + "&instructionsRequired="
-                + instructionsRequired + "&includeIngredients=";
+                + limitLicense + "&instructionsRequired=" + instructionsRequired
+                + "&cuisine=" + cuisine + "&includeIngredients=";
 
         // add on ingredients to url string
         if (ingredients.size() > 1) {
@@ -188,6 +188,16 @@ public class SpoonAPI  {
             }
             if (response.has("instructions")) {
                 recipeFull.setInstructions(response.getString("instructions"));
+            }
+            // add cuisines, if recipe has them
+            if (response.has("cuisine")) {
+                JSONArray cuisines = response.getJSONArray("cuisine");
+
+                List<String> recipeCuisines = new ArrayList<>();
+                for (int i=0; i<cuisines.length(); ++i) {
+                    recipeCuisines.add(cuisines.getString(i));
+                }
+                recipeFull.setCuisines(recipeCuisines);
             }
 
             JSONArray ingredients_json = response.getJSONArray("extendedIngredients");
