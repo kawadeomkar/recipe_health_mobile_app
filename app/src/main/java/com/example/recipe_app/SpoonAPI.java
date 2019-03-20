@@ -48,7 +48,7 @@ public class SpoonAPI  {
     url_query: adds on parameters
     result: returns a list of recipe objects
      */
-    public String getRecipeComplexURL(List<String> ingredients, int number) {
+    public String getRecipeComplexURL(List<String> ingredients, int number, int maxCalories) {
         recipeComplex = new ArrayList<>();
         String ranking = "0";
         String offset = "0";
@@ -59,11 +59,10 @@ public class SpoonAPI  {
         String intolerances;
         String diet; // vegan, keto etc
         String minFat = "0";
-        String minCalories = "0";
         String minProtein = "0";
         String minCarbs = "0";
         String url_query = url_complexRecipe + "?number=" + Integer.toString(number) + "&minFat=" +
-                minFat + "&minCalories=" + minCalories + "&minProtein=" + minProtein + "&minCarbs="
+                minFat + "&maxCalories=" + maxCalories + "&minProtein=" + minProtein + "&minCarbs="
                 + minCarbs + "&ranking=" + ranking + "&offset=" + offset + "&limitLicense="
                 + limitLicense + "&instructionsRequired="
                 + instructionsRequired + "&includeIngredients=";

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,9 +19,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -115,6 +120,9 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
             case R.id.btn_recipeInfo_exit:
                 finish();
                 break;
+            case R.id.btn_eat:
+                changeCalories();
+                System.out.println("HIT EAT BUTTOM");
         }
     }
 
@@ -189,6 +197,44 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
             }
         };
         requestQueue.add(req);
+    }
+
+    private void changeCalories() {
+        db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef;
+
+        docRef = db.collection("users").document(email)
+                .collection("activities").document("account_information");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Get the data back
+                        Map<String, Object> doc = document.getData();
+
+                        int allowedCalories = (int) Float.parseFloat(doc.get("caloriesLeft").toString());
+
+                        Map<String, Object> userMap = new HashMap<>();
+                        int newCalories = allowedCalories - recipeFull.getNutrition().getCalories();
+                        System.out.println("Setting New CALories" + newCalories);
+                        userMap.put("caloriesLeft", Integer.toString(newCalories));
+
+                        db.collection("users").document(email).collection("activities")
+                                .document("account_information").update(userMap);
+                    }
+                    else {
+                        Log.d("Register.java", "No such doc");
+                    }
+                }
+                else {
+                    Log.d("Register.java", "get failed with " + task.getException());
+                }
+            }
+        });
+
     }
 
 }

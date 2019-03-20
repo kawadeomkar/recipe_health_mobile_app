@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +48,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         getView().findViewById(R.id.save_button).setOnClickListener(this);
 
         docRef = db.collection("users").document(email)
@@ -54,12 +57,27 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 EditText temp;
+                TextView temp1;
                 Spinner temp2;
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         // Get the data back
                         Map<String, Object> doc = document.getData();
+
+                        // Update calories if new day
+                        Date newDate = new Date();
+                        String newDateDay = newDate.toString().split(" ")[2];
+                        String oldDateDay = doc.get("prevDate").toString().split(" ")[2];
+                        if (!newDateDay.equals(oldDateDay)) {
+                            Map<String, Object> userMap = new HashMap<>();
+                            userMap.put("caloriesLeft", doc.get("TDEE").toString());
+                            userMap.put("prevDate", newDate.toString());
+
+
+                            db.collection("users").document(email).collection("activities")
+                                    .document("account_information").update(userMap);
+                        }
 
                         // Set age text field to age in database
                         temp = getView().findViewById(R.id.editAge);
@@ -72,6 +90,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                         // Set height text field to height in database
                         temp = getView().findViewById(R.id.editHeight);
                         temp.setText(doc.get("height").toString());
+
+                        // Set calories text field to calories in database
+                        temp1 = getView().findViewById(R.id.calories);
+                        temp1.setText(doc.get("caloriesLeft").toString());
+
 
                         // Set gender spinner field to gender in database
                         temp2 = getView().findViewById(R.id.editGender);
@@ -136,6 +159,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                 // save weight_goal in class variable
                 temp2 = getView().findViewById(R.id.editWeightGoal);
                 weight_goal = temp2.getSelectedItem().toString();
+
 
                 Spinner spin_act = getView().findViewById(R.id.editActivityLevel);
                 activity_level = spin_act.getSelectedItem().toString();
@@ -209,7 +233,15 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
             }
         }
 
-        return TDEE;
+        if (this.weight_goal.contains("Bulk up!")) {
+            return TDEE * 1.1;
+        }
+        if (this.weight_goal.contains("Cut fat!")) {
+            return TDEE * 0.9;
+        }
+        else {
+            return TDEE;
+        }
 
     }
 }
