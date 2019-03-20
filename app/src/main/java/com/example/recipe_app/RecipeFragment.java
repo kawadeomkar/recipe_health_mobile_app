@@ -30,8 +30,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,31 +110,29 @@ public class RecipeFragment extends Fragment {
                         String allowedCalories = doc.get("caloriesLeft").toString();
 
                         List<Map.Entry<String, Integer>> cuisineEntries = new ArrayList<>(randomCuisines.entrySet());
-                        Collections.sort(cuisineEntries, new Comparator<Map.Entry<String, Integer>>() {
-                            @Override
-                            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                                if (o1.getValue() > o2.getValue()) {
-                                    return o1.getValue();
-                                } else {
-                                    return o2.getValue();
-                                }
+                        int max = 0;
+                        String cuisine = "";
+
+                        Log.d("TAGGGGGG", cuisineEntries.get(0).getValue().getClass().getSimpleName());
+
+                        for (int i=0; i<cuisineEntries.size(); ++i) {
+                            if ((int)cuisineEntries.get(i).getValue() > max) {
+                                cuisine = cuisineEntries.get(i).getKey();
+                                max = (int) cuisineEntries.get(i).getValue();
                             }
-                        });
+                        }
 
                         Random random = new Random();
-                        String randCuisine;
                         int determine = random.nextInt(2);
                         if (determine == 0) {
-                            randCuisine = cuisineEntries.get(cuisineEntries.size()).getKey();
-                        } else {
-                            randCuisine = cuisineEntries.get(random.nextInt(cuisineEntries.size())).getKey();
+                            cuisine = cuisineEntries.get(random.nextInt(cuisineEntries.size())).getKey();
                         }
 
                         final SpoonAPI spoon = new SpoonAPI();
                         final String header = spoon.getHeaderKey();
 
                         String url = spoon.getRecipeComplexURL(ingredients, numberRecipesToShow,
-                                (int) Float.parseFloat(allowedCalories), randCuisine);
+                                (int) Float.parseFloat(allowedCalories), cuisine);
                         requestQueue = Volley.newRequestQueue(getActivity());
                         Log.d("RECIPEFRAGMENT", "ABOUT TO DO THE API CALL");
                         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
