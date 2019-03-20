@@ -6,7 +6,7 @@ Calls to the Spoonacular API allow the application to grab recipes from the Spoo
 
 
 ## Java Files
-* Files are stored in app/src/main/java/com/example/recipe_app/
+* Files are stored in **app/src/main/java/com/example/recipe_app/**
 
 ### AccountFragment.java
 * Retrieves, saves, and displays account information in Firebase (age, weight, height, gender, weight goal, actiivty level, dietary restrictions)
