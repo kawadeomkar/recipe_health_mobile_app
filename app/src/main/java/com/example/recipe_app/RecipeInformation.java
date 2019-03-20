@@ -108,7 +108,7 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
                     }
                 });
 
-        if (recipeFull.getCuisines().size() > 0 ) {
+        if (recipeFull.getCuisines() != null) {
             final RecipeFull recipeFinal = recipeFull;
             final DocumentReference docRefAccount = db.collection("users").document(email)
                     .collection("activities").document("account_information");
@@ -116,13 +116,11 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
                 @Override
                 public Void apply(Transaction transaction) throws FirebaseFirestoreException {
                     DocumentSnapshot snapshot = transaction.get(docRefAccount);
-                    Map<String, Integer> newLearningRandom = (Map<String, Integer>) snapshot.get("learning_random");
+                    List<String> newLearningRandom = (List<String>) snapshot.get("learning_random");
 
-                    List<String> cuisines = recipeFinal.getCuisines();
-                    for (int i=0; i<cuisines.size(); ++i) {
-                        String temp = cuisines.get(i);
-                        int count = newLearningRandom.get(temp) + 1;
-                        newLearningRandom.put(temp, count);
+                    List<String> copy = recipeFull.getCuisines();
+                    for (int i=0; i <copy.size(); ++i) {
+                        newLearningRandom.add(copy.get(i));
                     }
                     transaction.update(docRefAccount, "learning_random", newLearningRandom);
 
@@ -249,11 +247,19 @@ public class RecipeInformation extends AppCompatActivity implements View.OnClick
 
                         Map<String, Object> userMap = new HashMap<>();
                         int newCalories = allowedCalories - recipeFull.getNutrition().getCalories();
-                        System.out.println("Setting New CALories" + newCalories);
-                        userMap.put("caloriesLeft", Integer.toString(newCalories));
+                        if (newCalories < 0) {
+                            Toast.makeText(RecipeInformation.this, "You should not eat this," +
+                                            " you are over your calories by " +  allowedCalories * -1,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(RecipeInformation.this, "You have " + newCalories + " left today!",
+                                    Toast.LENGTH_SHORT).show();
+                            userMap.put("caloriesLeft", Integer.toString(newCalories));
 
-                        db.collection("users").document(email).collection("activities")
-                                .document("account_information").update(userMap);
+                            db.collection("users").document(email).collection("activities")
+                                    .document("account_information").update(userMap);
+                        }
+
                     }
                     else {
                         Log.d("Register.java", "No such doc");

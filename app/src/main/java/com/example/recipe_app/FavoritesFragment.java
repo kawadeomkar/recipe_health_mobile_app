@@ -126,7 +126,7 @@ public class FavoritesFragment extends Fragment {
 
     // handle the favoriteComplexAdapter, use favoriteList to display all favorites to user
     private void handleFavoriteFragmentAdapter() {
-        Context context = getActivity().getApplicationContext();
+        Context context = getContext();
         favoriteComplexAdapter = new FavoriteComplexAdapter(context, favoriteList);
         favoriteListView.setAdapter(favoriteComplexAdapter);
         favoriteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

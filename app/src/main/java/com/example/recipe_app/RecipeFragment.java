@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,10 +93,12 @@ public class RecipeFragment extends Fragment {
         });
     }
 
+
     // call api with given ingredients
     private void retrieveRecipesWithIngredients() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth firebaseAuth;
+        requestQueue = Volley.newRequestQueue(getActivity());
 
         docRef = db.collection("users").document(email)
                 .collection("activities").document("account_information");
@@ -106,26 +110,41 @@ public class RecipeFragment extends Fragment {
                     if (document.exists()) {
                         // Get the data back
                         Map<String, Object> doc = document.getData();
-                        Map<String, Integer> randomCuisines = (Map<String, Integer>) doc.get("learning_random");
+                        //Map<String, Integer> randomCuisines = (Map<String, Integer>) doc.get("learning_random");
                         String allowedCalories = doc.get("caloriesLeft").toString();
+                        int calsComp = Integer.parseInt(allowedCalories);
 
-                        List<Map.Entry<String, Integer>> cuisineEntries = new ArrayList<>(randomCuisines.entrySet());
+                        if (calsComp < 0) {
+                            Toast.makeText(getContext(),
+                                    "You're out of calories for today!", Toast.LENGTH_SHORT).show();
+                        }
+
+
                         int max = 0;
                         String cuisine = "";
 
-                        Log.d("TAGGGGGG", cuisineEntries.get(0).getValue().getClass().getSimpleName());
+                        List<String> cuisinesList = new ArrayList<>(
+                                Arrays.asList("african", "chinese", "korean", "japanese", "vietnamese",
+                                        "thai", "irish", "italian", "spanish", "british", "indian",
+                                        "mexican", "french", "eastern", "middle", "american", "jewish",
+                                        "southern", "caribbean", "cajun", "greek", "nordic", "german",
+                                        "european", "eastern")
+                        );
 
-                        for (int i=0; i<cuisineEntries.size(); ++i) {
-                            if ((int)cuisineEntries.get(i).getValue() > max) {
-                                cuisine = cuisineEntries.get(i).getKey();
-                                max = (int) cuisineEntries.get(i).getValue();
+                        /*
+                        for (int i=0; i<cuisinesList.size(); ++i) {
+                            if (randomCuisines.get(cuisinesList.get(i)) > max) {
+                                cuisine = cuisinesList.get(i);
+                                max = randomCuisines.get(cuisine);
                             }
-                        }
+                        }*/
 
                         Random random = new Random();
                         int determine = random.nextInt(2);
                         if (determine == 0) {
-                            cuisine = cuisineEntries.get(random.nextInt(cuisineEntries.size())).getKey();
+                            cuisine = cuisinesList.get(random.nextInt(cuisinesList.size()));
+                        } else {
+                            cuisine = "american";
                         }
 
                         final SpoonAPI spoon = new SpoonAPI();
@@ -133,7 +152,7 @@ public class RecipeFragment extends Fragment {
 
                         String url = spoon.getRecipeComplexURL(ingredients, numberRecipesToShow,
                                 (int) Float.parseFloat(allowedCalories), cuisine);
-                        requestQueue = Volley.newRequestQueue(getActivity());
+
                         Log.d("RECIPEFRAGMENT", "ABOUT TO DO THE API CALL");
                         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
                                 new Response.Listener<JSONObject>() {
